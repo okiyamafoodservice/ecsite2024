@@ -3,10 +3,43 @@ import goods from "../data/goods.json";
 console.log(goods);
 ---
 
+
 <ul>
-  {goods.map((list) => 
-     <li>{list.name}</li>
-     <img src=`/images/${list.itemphotos[0]}` />
-     <p>{list.text}</p>
+  {goods.map((list) =>
+
+ <li>
+    <a href=`/goods/${list.url}`>
+    <div class="imgBox">   <img src=`/images/${list.itemphotos[0]}` /></div>
+
+      <h3>{list.name}</h3>
+     <p>¥{list.price}</p>
+     <p class="state "></p>
+      </a>
+       </li>
+
   )}
+
 </ul>
+
+<style lang="scss">
+
+  ul{
+    display: flex;
+    a{
+      width: fit-content;
+    }
+    li{
+      width: 33%;
+      list-style: none;
+      .imgBox{
+        width: 100%;
+        aspect-ratio: 1/1;
+        overflow: hidden;
+      }
+      img{
+        width: 100%;
+      }
+    }
+  }
+
+</style>

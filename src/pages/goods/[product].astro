@@ -16,6 +16,12 @@ const goodsData = goods.find(({url}) => product === url);
 
 <Layout>
 <p>{goodsData.name}</p>
-<p>{goodsData.price}</p>
+<p class="text-base">¥{goodsData.price}(税込)</p>
 <img src=`/images/${goodsData.itemphotos[0]}`>
 </Layout>
+
+<style>
+  img {
+    width: 100%;
+  }
+</style>
