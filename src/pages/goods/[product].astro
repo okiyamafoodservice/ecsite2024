@@ -2,6 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 
 import goods from "../../data/goods.json";
+
+import Splide from '@splidejs/splide';
+  import '@splidejs/splide/dist/css/splide.css';
+
 export const getStaticPaths = async() => {
   return goods.map(({ url }) => {
     return {
@@ -12,16 +16,108 @@ export const getStaticPaths = async() => {
 const { product } = Astro.params;
 const goodsData = goods.find(({url}) => product === url);
 
+
+
 ---
 
 <Layout>
-<p>{goodsData.name}</p>
+<div class="goodsDetail">
+
+<h3>{goodsData.name}</h3>
 <p class="text-base">¥{goodsData.price}(税込)</p>
-<img src=`/images/${goodsData.itemphotos[0]}`>
+</div>
+
+<section id="main-slider" class="splide" aria-label="商品画像スライダー">
+  <div class="splide__track">
+    <ul class="splide__list">
+      {goodsData.itemphotos.map(photo => (
+        <li class="splide__slide">
+          <img src={`/images/${photo}`} alt="商品画像">
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section id="thumbnail-slider" class="splide" aria-label="サムネイルスライダー">
+  <div class="splide__track">
+    <ul class="splide__list">
+      {goodsData.itemphotos.map(photo => (
+        <li class="splide__slide">
+          <img src={`/images/${photo}`} alt="サムネイル画像">
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
 </Layout>
 
-<style>
-  img {
-    width: 100%;
+<script>
+  import Splide from '@splidejs/splide';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var mainSlider = new Splide('#main-slider', {
+      type       : 'fade',
+      heightRatio: 0.5,
+      pagination : false,
+      arrows     : false,
+      cover      : true,
+    }).mount();
+
+    var thumbnailSlider = new Splide('#thumbnail-slider', {
+      fixedWidth  : 100,
+      fixedHeight : 64,
+      isNavigation: true,
+      gap         : 20,
+      focus       : 'center',
+      pagination  : false,
+      cover       : true,
+      breakpoints : {
+        600: {
+          fixedWidth : 66,
+          fixedHeight: 40,
+        },
+      },
+    }).mount();
+
+    mainSlider.sync(thumbnailSlider);
+  });
+</script>
+
+
+<style lang="scss">
+
+    .goodsDetail {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h3{
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    p{
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
   }
+
+  #main-slider {
+    .splide__slide img {
+  width: 100%;
+  height: auto;
+}
+margin-bottom: 100px;
+  }
+
+
+  #thumbnail-carousel {
+    .splide__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+}
+
 </style>

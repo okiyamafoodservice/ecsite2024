@@ -21,25 +21,57 @@ console.log(goods);
 
 </ul>
 
+
+
 <style lang="scss">
 
+   $breakpoints: (
+  "sm": "screen and (min-width: 900px)",
+  "md": "screen and (min-width: 768px)",
+  "lg": "screen and (min-width: 1000px)",
+  "xl": "screen and (min-width: 1200px)",
+ ) !default;
+
+ @mixin mq($breakpoint) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+ }
   ul{
+    width: 85%;
+    margin: 0 auto;
     display: flex;
+    flex-direction: column;
     a{
       width: fit-content;
     }
     li{
-      width: 33%;
+      width: 100%;
       list-style: none;
       .imgBox{
         width: 100%;
         aspect-ratio: 1/1;
         overflow: hidden;
       }
+      h3{
+        font-size: 1.2rem;
+        margin: 0;
+
+      }
       img{
         width: 100%;
+        height: auto;
       }
     }
   }
+
+@include mq(sm){
+  ul{
+flex-direction: row;
+    li{
+      width: 25%;
+    }
+  }
+}
 
 </style>
