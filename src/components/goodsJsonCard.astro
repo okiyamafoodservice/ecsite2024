@@ -8,18 +8,30 @@ console.log(goods);
   {goods.map((list) =>
 
  <li>
-    <a href=`/goods/${list.url}`>
-    <div class="imgBox">   <img src=`/images/${list.itemphotos[0]}` /></div>
+    <a href=`/06_ecsite/goods/${list.url}`>
+    <div class="imgBox">   <img src=`/06_ecsite/images/${list.itemphotos[0]}` /></div>
 
       <h3>{list.name}</h3>
-     <p>¥{list.price}</p>
-     <p class="state "></p>
+     <p class="price">¥{list.price}</p>
+   <p id="state" class="state"></p>
       </a>
        </li>
 
   )}
 
 </ul>
+ <script>
+    const list = {
+      state: true // ここをtrueにすると "In stock" になります
+    };
+
+    // DOMContentLoadedイベントを待ってからDOM操作を行う
+    document.addEventListener('DOMContentLoaded', function () {
+      var stateElement = document.getElementById('state');
+      stateElement.textContent = list.state ? 'In stock' : 'Sold out';
+    });
+  </script>
+
 
 
 
@@ -54,13 +66,18 @@ console.log(goods);
         overflow: hidden;
       }
       h3{
-        font-size: 1.2rem;
+        font-size: 1rem;
         margin: 0;
+        color: #048d2d;
 
       }
       img{
         width: 100%;
         height: auto;
+      }
+
+      .price{
+        color: #d72d06;
       }
     }
   }
@@ -68,8 +85,10 @@ console.log(goods);
 @include mq(sm){
   ul{
 flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     li{
-      width: 25%;
+      width: 30%;
     }
   }
 }

@@ -1,10 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-
 import goods from "../../data/goods.json";
-
 import Splide from '@splidejs/splide';
-  import '@splidejs/splide/dist/css/splide.css';
+import '@splidejs/splide/dist/css/splide.css';
 
 export const getStaticPaths = async() => {
   return goods.map(({ url }) => {
@@ -13,43 +11,62 @@ export const getStaticPaths = async() => {
     }
   });
 };
+
 const { product } = Astro.params;
 const goodsData = goods.find(({url}) => product === url);
-
-
-
 ---
 
 <Layout>
-<div class="goodsDetail">
 
-<h3>{goodsData.name}</h3>
-<p class="text-base">¥{goodsData.price}(税込)</p>
-</div>
 
-<section id="main-slider" class="splide" aria-label="商品画像スライダー">
-  <div class="splide__track">
-    <ul class="splide__list">
-      {goodsData.itemphotos.map(photo => (
-        <li class="splide__slide">
-          <img src={`/images/${photo}`} alt="商品画像">
-        </li>
-      ))}
-    </ul>
+  <div class="section__flex">
+    <section id="main-slider" class="splide" aria-label="商品画像スライダー">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {goodsData.itemphotos.map(photo => (
+            <li class="splide__slide">
+              <img src={`/06_ecsite/images/${photo}`} alt="¥{goodsData.name}">
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <div class="product-info">
+
+       <div class="goodsDetail">
+    <h3>{goodsData.name}</h3>
+    <p class="text-base">¥{goodsData.price}(税込)</p>
   </div>
-</section>
+      <section id="thumbnail-slider" class="splide" aria-label="サムネイルスライダー">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {goodsData.itemphotos.map(photo => (
+              <li class="splide__slide">
+                <img src={`/06_ecsite/images/${photo}`} alt="¥{goodsData.name}">
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-<section id="thumbnail-slider" class="splide" aria-label="サムネイルスライダー">
-  <div class="splide__track">
-    <ul class="splide__list">
-      {goodsData.itemphotos.map(photo => (
-        <li class="splide__slide">
-          <img src={`/images/${photo}`} alt="サムネイル画像">
-        </li>
-      ))}
-    </ul>
+      <p class="text-data">{goodsData.text}</p>
+
+      <!-- 個数選択のボタンを追加 -->
+      <div class="quantity-selector">
+        <button id="decrease" type="button">-</button>
+        <span id="quantity">1</span>
+        <button id="increase" type="button">+</button>
+      </div>
+
+      <!-- カートに追加ボタン -->
+      <button class="add-to-cart">カートに追加</button>
+    </div>
   </div>
-</section>
+
+  <div class="back">
+    <a href="/06_ecsite">TOP</a>
+  </div>
 </Layout>
 
 <script>
@@ -69,55 +86,220 @@ const goodsData = goods.find(({url}) => product === url);
       fixedHeight : 64,
       isNavigation: true,
       gap         : 20,
-      focus       : 'center',
       pagination  : false,
       cover       : true,
+
       breakpoints : {
-        600: {
+        768: {
           fixedWidth : 66,
           fixedHeight: 40,
+          focus: 'center',
         },
       },
     }).mount();
 
     mainSlider.sync(thumbnailSlider);
+
+    // 個数を増減するスクリプト
+    function updateQuantity() {
+      const quantitySpan = document.getElementById('quantity');
+      const increaseButton = document.getElementById('increase');
+      const decreaseButton = document.getElementById('decrease');
+      let quantity = 1;
+
+      increaseButton.addEventListener('click', () => {
+        quantity++;
+        quantitySpan.textContent = quantity;
+      });
+
+      decreaseButton.addEventListener('click', () => {
+        if (quantity > 1) {
+          quantity--;
+          quantitySpan.textContent = quantity;
+        }
+      });
+    }
+
+    updateQuantity();
   });
 </script>
 
-
 <style lang="scss">
+.goodsDetail {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #519700;
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.5rem;
+  }
+  p {
+    font-size: 1.5rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+}
 
-    .goodsDetail {
-    margin: 30px 0;
+#main-slider {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 800px;
+  perspective: 1000px;  /* 3D効果を追加 */
+  border: none;
+  .splide__slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  /* 変換とシャドウ効果のトランジション */
+  }
+  margin-bottom: 100px;
+  &:hover .splide__slide img {
+    transform: scale(1.05) rotateY(10deg);  /* 拡大と回転による3D効果 */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);  /* シャドウ効果 */
+  }
+}
+
+#thumbnail-slider {
+  .splide__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .splide__slide img:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+margin: 0 auto;
+  .text-data {
+    font-size: 1.2rem;
+    color: #333;
+    padding: 0 20px;
+    text-align: left;
+  }
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  button {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  span {
+    font-size: 1.5rem;
+    width: 2rem;
+    text-align:center;
+  }
+}
+
+.add-to-cart {
+  font-size: 1.2rem;
+  padding: 0.75rem 2rem;
+  margin-top: 20px;
+  background-color: #fb900f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #218838;
+}
+
+.back {
+  margin-top: 50px;
+  a {
+    display: block;
+    padding: 10px 50px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    margin: 0 auto;
+    border: 2px solid #000;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    margin: 0 auto;
+    width: fit-content;
+  }
+  a:hover {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.section__flex {
+  display: block;
+  overflow: clip;
+   width: 95%;
+   margin: auto;
+  .text-data {
+    margin-top: 40px;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    padding: 0 ;
+
+  }
+}
+
+
+
+
+@media screen and (min-width: 768px) {
+  .section__flex {
+    width: 80%;
+    margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    h3{
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+    #main-slider {
+      width: 60%;
     }
-    p{
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+    .product-info {
+      width: 30%;
+    }
+    #thumbnail-slider {
+      width: 100%;
     }
   }
 
-  #main-slider {
-    .splide__slide img {
-  width: 100%;
-  height: auto;
+  .section__flex {
+  overflow: clip;
+   width: 95%;
+   margin: auto;
 }
-margin-bottom: 100px;
-  }
-
-
-  #thumbnail-carousel {
-    .splide__slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
-
-}
-
 </style>
