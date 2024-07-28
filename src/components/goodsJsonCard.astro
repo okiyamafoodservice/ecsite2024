@@ -21,15 +21,19 @@ console.log(goods);
 
 </ul>
  <script>
-    const list = {
-      state: true // ここをtrueにすると "In stock" になります
-    };
-
-    // DOMContentLoadedイベントを待ってからDOM操作を行う
-    document.addEventListener('DOMContentLoaded', function () {
-      var stateElement = document.getElementById('state');
-      stateElement.textContent = list.state ? 'In stock' : 'Sold out';
-    });
+      document.addEventListener('DOMContentLoaded', function () {
+        fetch('/06_ecsite/goods/${list.state}')
+          .then(response => response.json())
+          .then(list => {
+            var stateElement = document.getElementById('state');
+            stateElement.textContent = list.state ? 'In stock' : 'Sold out';
+          })
+          .catch(error => {
+            console.error('Error fetching the JSON:', error);
+            var stateElement = document.getElementById('state');
+            stateElement.textContent = 'Error loading state';
+          });
+      });
   </script>
 
 
