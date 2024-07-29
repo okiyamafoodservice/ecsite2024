@@ -20,12 +20,9 @@ console.log(goods);
   )}
 
 </ul>
- <script>
-  const goodsList = document.getElementById('goods-list');
-  const state = document.getElementById('state');
-  const goods = JSON.parse(`{{goods | json}}`);
-  console.log(goods);
-  </script>
+
+
+
 
 
 
@@ -78,6 +75,24 @@ console.log(goods);
       }
     }
   }
+
+  .hidden {
+  display: none;
+}
+
+.show-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #048d2d;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.show-more:hover {
+  background-color: #036923;
+}
 
 @include mq(sm){
   ul{
