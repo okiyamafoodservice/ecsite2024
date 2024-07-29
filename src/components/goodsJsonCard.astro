@@ -3,8 +3,7 @@ import goods from "../data/goods.json";
 console.log(goods);
 ---
 
-
-<ul>
+<ul id="goods-list">
   {goods.map((list) =>
 
  <li>
@@ -12,6 +11,7 @@ console.log(goods);
     <div class="imgBox">   <img src=`/06_ecsite/images/${list.itemphotos[0]}` /></div>
 
       <h3>{list.name}</h3>
+        <p class="companyName">{list.maker}</p>
      <p class="price">¥{list.price}</p>
    <p id="state" class="state"></p>
       </a>
@@ -21,19 +21,10 @@ console.log(goods);
 
 </ul>
  <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        fetch('/06_ecsite/goods/${list.state}')
-          .then(response => response.json())
-          .then(list => {
-            var stateElement = document.getElementById('state');
-            stateElement.textContent = list.state ? 'In stock' : 'Sold out';
-          })
-          .catch(error => {
-            console.error('Error fetching the JSON:', error);
-            var stateElement = document.getElementById('state');
-            stateElement.textContent = 'Error loading state';
-          });
-      });
+  const goodsList = document.getElementById('goods-list');
+  const state = document.getElementById('state');
+  const goods = JSON.parse(`{{goods | json}}`);
+  console.log(goods);
   </script>
 
 
@@ -58,6 +49,7 @@ console.log(goods);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    row-gap: 50px;
     a{
       width: fit-content;
     }
@@ -68,6 +60,7 @@ console.log(goods);
         width: 100%;
         aspect-ratio: 1/1;
         overflow: hidden;
+        margin-bottom: 10px;
       }
       h3{
         font-size: 1rem;
@@ -95,6 +88,11 @@ flex-direction: row;
       width: 30%;
     }
   }
+}
+
+.companyName{
+  font-size: 0.8rem;
+  color: #333;
 }
 
 </style>

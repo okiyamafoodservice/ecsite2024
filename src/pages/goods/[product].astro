@@ -19,50 +19,69 @@ const goodsData = goods.find(({url}) => product === url);
 <Layout>
 
 
-  <div class="section__flex">
-    <section id="main-slider" class="splide" aria-label="商品画像スライダー">
+ <div class="section__flex">
+  <section id="main-slider" class="splide" aria-label="商品画像スライダー">
+    <div class="splide__track">
+      <ul class="splide__list">
+        {goodsData.itemphotos.map(photo => (
+          <li class="splide__slide">
+            <img src={`/06_ecsite/images/${photo}`} alt={`¥${goodsData.name}`}>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <div class="product-info">
+    <div class="goodsDetail">
+      <h3>{goodsData.name}</h3>
+      <p class="companyName">{goodsData.maker}</p>
+      <p class="text-base">¥{goodsData.price}(税込)</p>
+    </div>
+    <section id="thumbnail-slider" class="splide" aria-label="サムネイルスライダー">
       <div class="splide__track">
         <ul class="splide__list">
           {goodsData.itemphotos.map(photo => (
             <li class="splide__slide">
-              <img src={`/06_ecsite/images/${photo}`} alt="¥{goodsData.name}">
+              <img src={`/06_ecsite/images/${photo}`} alt={`¥${goodsData.name}`}>
             </li>
           ))}
         </ul>
       </div>
     </section>
 
-    <div class="product-info">
+    <p class="text-data">{goodsData.text}</p>
 
-       <div class="goodsDetail">
-    <h3>{goodsData.name}</h3>
-    <p class="text-base">¥{goodsData.price}(税込)</p>
-  </div>
-      <section id="thumbnail-slider" class="splide" aria-label="サムネイルスライダー">
-        <div class="splide__track">
-          <ul class="splide__list">
-            {goodsData.itemphotos.map(photo => (
-              <li class="splide__slide">
-                <img src={`/06_ecsite/images/${photo}`} alt="¥{goodsData.name}">
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <p class="text-data">{goodsData.text}</p>
-
-      <!-- 個数選択のボタンを追加 -->
-      <div class="quantity-selector">
-        <button id="decrease" type="button">-</button>
-        <span id="quantity">1</span>
-        <button id="increase" type="button">+</button>
-      </div>
-
-      <!-- カートに追加ボタン -->
-      <button class="add-to-cart">カートに追加</button>
+    <!-- 個数選択のボタンを追加 -->
+    <div class="quantity-selector">
+      <button id="decrease" type="button">-</button>
+      <span id="quantity">1</span>
+      <button id="increase" type="button">+</button>
     </div>
+
+    <!-- カートに追加ボタン -->
+    <button class="add-to-cart">カートに追加</button>
   </div>
+</div>
+
+<div class="relation">
+  <h3 class="relationTitle">関連商品</h3>
+  <ul class="relationItem">
+    {goods.filter(item => item.maker === goodsData.maker).map(filteredItem => (
+      <li key={filteredItem.id}>
+        <a href={`/06_ecsite/goods/${filteredItem.url}`}>
+          <div class="imgBox">
+            <img src={`/06_ecsite/images/${filteredItem.itemphotos[0]}`} alt={filteredItem.name}>
+          </div>
+          <h3>{filteredItem.name}</h3>
+          <p class="companyName">{filteredItem.maker}</p>
+          <p class="price">¥{filteredItem.price}</p>
+          <p id="state" class="state"></p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
 
   <div class="back">
     <a href="/06_ecsite">TOP</a>
@@ -75,7 +94,7 @@ const goodsData = goods.find(({url}) => product === url);
   document.addEventListener('DOMContentLoaded', function () {
     var mainSlider = new Splide('#main-slider', {
       type       : 'fade',
-      heightRatio: 0.5,
+      heightRatio: 1,
       pagination : false,
       arrows     : false,
       cover      : true,
@@ -83,7 +102,7 @@ const goodsData = goods.find(({url}) => product === url);
 
     var thumbnailSlider = new Splide('#thumbnail-slider', {
       fixedWidth  : 100,
-      fixedHeight : 64,
+      fixedHeight : 100,
       isNavigation: true,
       gap         : 20,
       pagination  : false,
@@ -92,7 +111,7 @@ const goodsData = goods.find(({url}) => product === url);
       breakpoints : {
         768: {
           fixedWidth : 66,
-          fixedHeight: 40,
+          fixedHeight: 66,
           focus: 'center',
         },
       },
@@ -125,14 +144,17 @@ const goodsData = goods.find(({url}) => product === url);
 </script>
 
 <style lang="scss">
+
 .goodsDetail {
   margin: 30px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   h3 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    margin:auto;
     color: #519700;
     text-align: center;
     border-bottom: 2px solid #ccc;
@@ -142,6 +164,7 @@ const goodsData = goods.find(({url}) => product === url);
     font-size: 1.5rem;
     color: #666;
     margin-bottom: 1rem;
+    margin-top:10px;
   }
 }
 
@@ -149,9 +172,9 @@ const goodsData = goods.find(({url}) => product === url);
   width: 100%;
   margin: 0 auto;
   max-width: 800px;
-  perspective: 1000px;  /* 3D効果を追加 */
   border: none;
   .splide__slide img {
+   aspect-ratio: 1/1;
     width: 100%;
     height: auto;
     border-radius: 10px;
@@ -176,6 +199,10 @@ const goodsData = goods.find(({url}) => product === url);
   }
   .splide__slide img:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .splide__slide{
+      aspect-ratio: 1/1;
   }
 }
 
@@ -221,19 +248,27 @@ margin: 0 auto;
 }
 
 .add-to-cart {
-  font-size: 1.2rem;
-  padding: 0.75rem 2rem;
+  font-size: 1rem; /* フォントサイズを少し小さく */
+  padding: 0.75rem 1.5rem; /* パディングを調整 */
   margin-top: 20px;
   background-color: #fb900f;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px; /* ボーダーの角を少し丸く */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* シャドウを追加 */
 }
 
 .add-to-cart:hover {
-  background-color: #218838;
+  background-color: #e07b0b; /* ホバー時の背景色を少し暗く */
+  transform: translateY(-2px); /* ホバー時に少し上に動かす */
+}
+
+.add-to-cart:active {
+  background-color: #d06e0b; /* クリック時の背景色 */
+  transform: translateY(0); /* クリック時に元の位置に戻す */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* クリック時のシャドウ */
 }
 
 .back {
@@ -274,7 +309,71 @@ margin: 0 auto;
   }
 }
 
+.relation {
+  width: 85%;
+  margin: 0 auto;
+}
 
+.relationTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: left;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.relationItem {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  row-gap: 50px;
+  position: relative;
+}
+
+.relationItem::after {
+  content: "";
+  flex-grow: 1;
+  min-width: 30%;
+}
+
+.relationItem a {
+  width: fit-content;
+}
+
+.relationItem li {
+  width: 30%;
+  list-style: none;
+  margin-right: 3.33%; /* 余白を計算して左右に均等に配置する */
+}
+
+.relationItem li:nth-child(3n) {
+  margin-right: 0; /* 3番目のアイテムの右マージンをゼロに */
+}
+
+.imgBox {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #048d2d;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.price {
+  color: #d72d06;
+}
 
 
 @media screen and (min-width: 768px) {
@@ -301,5 +400,16 @@ margin: 0 auto;
    width: 95%;
    margin: auto;
 }
+
+.relationItem{
+   flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    li{
+      width: 30%;
+    }
 }
+
+}
+
 </style>

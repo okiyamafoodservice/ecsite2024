@@ -1,6 +1,6 @@
 [
   {
-    "itemphotos": [".jpg"],
+    "itemphotos": ["b1.jpg", "b2.jpg", "b1.jpg", "b2.jpg"],
     "name": "牛乳石鹸[青箱]",
     "price": "90",
     "state": false,
@@ -12,7 +12,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["r1.jpg", "r2.jpg"],
     "name": "牛乳石鹸[赤箱]",
     "price": "90",
     "state": false,
@@ -24,7 +24,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["o1.jpg"],
     "name": "BEAMS JAPAN別注　牛乳石鹸[橙箱]",
     "price": "90",
     "state": false,
@@ -36,7 +36,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["d1.jpg", "d2.jpg"],
     "name": "CASIO CA-53WF-1BJF",
     "price": "3,300",
     "state": false,
@@ -48,7 +48,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["f1.jpg", "f2.jpg"],
     "name": "CASIO F-84W",
     "price": "2,200",
     "state": false,
@@ -60,7 +60,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["bM1.jpg", "bM2.jpg", "bM3.jpg", "bean.jpg"],
     "name": "L.L.Bean ボートアンドトート Msize",
     "price": "8,690",
     "state": false,
@@ -72,7 +72,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["l5.jpg", "l6.jpg", "l7.jpg", "bean.jpg"],
     "name": "L.L.Bean ボートアンドトート Lsize",
     "price": "12,100",
     "state": false,
@@ -84,7 +84,7 @@
     "": ""
   },
   {
-    "itemphotos": ["plug01.jpg"],
+    "itemphotos": ["z1.jpg", "z2.jpg", "z3.jpg"],
     "name": "サワークライムデイパック20",
     "price": "9,460",
     "state": false,
@@ -93,6 +93,18 @@
     "colors": "black",
     "maker": "mont-bell",
     "url": "daypack20",
+    "": ""
+  },
+  {
+    "itemphotos": ["fx1.jpg", "fx2.jpg"],
+    "name": "Fuji Feather CX+",
+    "price": "132,000",
+    "state": false,
+    "text": "\nシャープなホリゾンタルフレームが美しい名機「フェザー」フレームをベースに、舗装路以外の環境にも対応できるようにアレンジされた汎用性の高いバイク。バテッドクロモリ菅によるしなやかさと剛性のバランスはロングツーリングからタウンユースまで幅広く対応。また、前後キャリア搭載可でバイクパッキングにもおすすめ。",
+    "id": "MUQ93FE",
+    "colors": "black",
+    "maker": "Fuji",
+    "url": "feathercx",
     "": ""
   }
 ]
